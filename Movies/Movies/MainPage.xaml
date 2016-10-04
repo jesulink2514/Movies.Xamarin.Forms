@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Movies"
+             Title="MovieTime"
+             x:Name="MainPage"
+             x:Class="Movies.MainPage">
+  <ContentPage.BindingContext>
+    <local:MainViewModel />
+  </ContentPage.BindingContext>
+  <StackLayout Spacing="15">
+    <StackLayout.Padding>
+      <OnPlatform Android="10" iOS="20,30,20,20" x:TypeArguments="Thickness"/>
+    </StackLayout.Padding>
+    <Label Text="Movies" FontSize="Large" FontAttributes="Bold,Italic" HorizontalOptions="FillAndExpand"
+           HorizontalTextAlignment="Center" TextColor="Purple"/>
+    <Entry Placeholder="Ingrese el nombre..."
+           Text="{Binding Search}"/>
+    <Button Text="Buscar" 
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="Blue"
+            Command="{Binding SearchCommand}"
+            TextColor="White"/>
+    <ListView VerticalOptions="FillAndExpand"
+              ItemsSource="{Binding Result}"
+              HasUnevenRows="False"
+              RowHeight="100"
+              ItemTapped="ListView_OnItemTapped">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <ViewCell.ContextActions>
+              <ToolbarItem Text="Share"
+                        CommandParameter="{Binding .}"
+                        Command="{Binding BindingContext.ShareCommand, Source={x:Reference MainPage}}"/>
+            </ViewCell.ContextActions>
+            <StackLayout Orientation="Horizontal" Padding="15">
+              <Image Source="{Binding Poster}" VerticalOptions="FillAndExpand"/>
+              <Label Text="{Binding Title}" FontSize="Medium"
+                     VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </StackLayout>
+</ContentPage>
